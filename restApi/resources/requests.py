@@ -23,10 +23,9 @@ class Request(Resource):
             if Ride_object.rides[ride_id]["seats_available"] >= data['number_of_seats']:
                 Ride_object.join_request(ride_id, data['username'], data['number_of_seats'], data['pick_up_point'],
                                          data['destination'])
-                return "Request made successfully"
-            return "This ride is only limited to {} seats".format(Ride_object.rides[ride_id]['seats_available'])
-        return "Ride does not exists"
-
+                return "Request made successfully",201
+            return "This ride is only limited to {} seats".format(Ride_object.rides[ride_id]['seats_available']),400
+        return "Ride does not exists",404
 
 class Requests(Resource):
     def get(self):

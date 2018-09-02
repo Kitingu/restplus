@@ -1,4 +1,6 @@
 import uuid
+
+
 class User:
     users = {}
 
@@ -9,13 +11,13 @@ class User:
         self.users[email] = {
             "username": username,
             "password": password,
-            "user_id":str(uuid.uuid4()),
+            "user_id": str(uuid.uuid4()),
             "admin": admin
         }
 
     def get_single_user(self, email):
-        if email in self.users['email']:
-            return self.users['email']
+        if email in self.users:
+            return self.users[email]
 
     def get_all_users(self):
         return {"users": self.users}

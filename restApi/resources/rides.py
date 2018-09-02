@@ -30,8 +30,8 @@ class Ride(Resource):
     @ride_api.expect(ride_offer)
     def post(self):
         data = RideParser.parser.parse_args()
-        Ride_object.create_rides(data['start_point'], data['destination'], data['seats_available'], str(data['date']),
-                                 str(data['time']))
+        Ride_object.create_rides(data['start_point'], data['destination'], data['seats_available'], data['date'],
+                                 data['time'])
         return "Ride created successfully", 201
 
 

@@ -1,7 +1,7 @@
 # from flask.ext.script import Manager, Server
 from restApi.app import create_app
 config_name="development"
-app=create_app(config_mame=config_name)
+app=create_app(config_name=config_name)
 # manager=Manager(client)
 # manager.add_command("runserver",Server(
 #     use_debugger=True,
