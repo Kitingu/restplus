@@ -1,4 +1,4 @@
-import os,sys
+import sys,os
 from .base import BaseTest
 import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
