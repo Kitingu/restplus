@@ -1,5 +1,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/decc4fdf78c5ca700f8c/test_coverage)](https://codeclimate.com/github/Kitingu/restplus/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/decc4fdf78c5ca700f8c/maintainability)](https://codeclimate.com/github/Kitingu/restplus/maintainability)
+![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Django.svg)
 
  Ride-my App is a carpooling application that provides drivers with the ability to create ride oﬀers and passengers to join the available ride oﬀers.
 ## Getting Started

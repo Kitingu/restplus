@@ -4,10 +4,10 @@ from flask import Flask
 from flask_restplus import Api
 from flask_jwt_extended import JWTManager
 
-from config import app_config
+from instance.config import app_config
 
 
-def create_app(config_name):
+def create_app(config_name='development'):
     app = Flask(__name__, instance_relative_config=True)
     app.config['JWT_SECRET_KEY'] = 'this is secret'
     app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -21,33 +21,9 @@ def create_app(config_name):
               license="MIT",
               contact_email='benedictmwendwa47@gmail.com')
 
-    # client.config.from_object(app_config[config_name])
-    # client.config.from_pyfile('config.py')
-    def token_required(f):
-        """All endoints that need log in will be wrapped by this decorator"""
+    app.config.from_object(app_config[config_name])
+    app.config.from_pyfile('config.py')
 
-        @wraps(f)
-        def decorated(*args, **kwargs):
-            token = None
-
-            if 'x-access-token' in request.headers:
-                token = request.headers['x-access-token']
-
-            if not token:
-                return jsonify({'Message': 'You need to log in'}), 401
-
-            try:
-                data = jwt.decode(token, os.getenv('SECRET'))
-                if data['username'] in user_object.u_token:
-                    current_user = user_object.users[data['username']]
-                else:
-                    return jsonify({"Message": "Token expired:Login again"}), 401
-            except BaseException:
-                return jsonify({'Message': 'Invalid request!'}), 401
-
-            return f(current_user, *args, **kwargs)
-
-        return decorated
 
     @jwt.expired_token_loader
     def my_expired_token_callback():

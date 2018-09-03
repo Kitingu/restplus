@@ -1,13 +1,14 @@
 class Config(object):
     """Parent configuration class."""
     DEBUG = False
-    CSRF_ENABLED = True
+    CSRF_ENABLED = True #Cross-Site Request Forgery
     SECRET = "This is secret "
 
 
 class DevelopmentConfig(Config):
     """Configurations for Development."""
     DEBUG = True
+    TESTING = True
 
 
 class TestingConfig(Config):
