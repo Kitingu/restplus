@@ -1,8 +1,6 @@
 import sys,os
-from .base import BaseTest
+from tests.Base_test import BaseTest
 import json
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 class Test_get_rides(BaseTest):
 
     def test_get_all_rides(self):

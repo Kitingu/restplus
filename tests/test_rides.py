@@ -1,8 +1,10 @@
 import sys,os
 import json
-from tests.base import BaseTest
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+import unittest
+from tests.Base_test import BaseTest
+myPath = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, myPath + '/../')
+# sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 class TestRides(BaseTest):
     """This is a class to test the functionality of the rides routes"""
 
@@ -21,3 +23,5 @@ class TestRides(BaseTest):
         self.assertEqual(response.status_code, 400)
 
 
+if __name__ == '__main__':
+    unittest.main()
