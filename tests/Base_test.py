@@ -36,12 +36,46 @@ class BaseTest(unittest.TestCase):
             "password": "test_pass",
             "confirm_password": "test_pass"
         }
+        self.test_user1 = {
+            "email": "gathee@gmail.com",
+            "username": "test_user",
+            "password": "test_pass",
+            "confirm_password": "test_pass"
+        }
+        self.invalid_user = {
+            "email": "@gmail.com",
+            "username": "",
+            "password": "test_pass",
+            "confirm_password": "test_pass"
+        }
+        self.test_user2 = {
+            "email": "blah@gmail.com",
+            "username": "test_user",
+            "password": "test_pass",
+            "confirm_password": "test_pass"
+        }
+        self.test_request = {
+            "email": "ben@gmail.com",
+            "username": "bene",
+            "number_of_seats": 5,
+            "pick_up_point": "ikinu",
+            "destination": "Githunguri"
+        }
+
+        self.request_many = {
+            "email": "ben@gmail.com",
+            "username": "bene",
+            "number_of_seats": 5000,
+            "pick_up_point": "ikinu",
+            "destination": "Githunguri"
+        }
 
     def tearDown(self):
         del self.edit_ride
         del self.invalid_ride
         del self.test_ride
         del self.test_user
+        del self.test_user2
 
 
 if __name__ == '__main__':

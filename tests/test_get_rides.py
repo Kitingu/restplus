@@ -19,3 +19,4 @@ class Test_get_rides(BaseTest):
     def test_get_non_existing(self):
         response = self.client().get('/api/v1/rides/1588')
         self.assertEqual(response.status_code, 404)
+

@@ -30,9 +30,12 @@ class Ride(Resource):
     @ride_api.expect(ride_offer)
     def post(self):
         data = RideParser.parser.parse_args()
-        Ride_object.create_rides(data['start_point'], data['destination'], data['seats_available'], data['date'],
-                                 data['time'])
-        return "Ride created successfully", 201
+        for items in data.values():
+            if items == "":
+                return "Fields must not be blank",400
+            Ride_object.create_rides(data['start_point'], data['destination'], data['seats_available'], data['date'],
+                                     data['time'])
+            return "Ride created successfully", 201
 
 
 class Riide(Resource):
@@ -40,11 +43,14 @@ class Riide(Resource):
     def put(self, ride_id):
         data = RideParser.parser.parse_args()
         new_ride = Ride_object.get_single_ride(ride_id)
-        if new_ride:
-            Ride_object.update(ride_id, data['start_point'], data['destination'], data['seats_available'],
-                               str(data['date']), str(data['time']))
-            return "Ride updated successfully", 200
-        return {"message": "Ride does not exist"}, 404
+        for items in data.values():
+            if items == "":
+                return "Fields must not be blank",400
+            if new_ride:
+                Ride_object.update(ride_id, data['start_point'], data['destination'], data['seats_available'],
+                                   str(data['date']), str(data['time']))
+                return "Ride updated successfully", 200
+            return {"message": "Ride does not exist"}, 404
 
     def delete(self, ride_id):
         new_ride = Ride_object.get_single_ride(ride_id)

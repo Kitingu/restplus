@@ -30,12 +30,15 @@ class Users(Resource):
         data = UserParser.parser.parse_args()
         hashed_pass = generate_password_hash(data['password'])
         new_user=User_object.get_single_user(data['email'])
-        if new_user:
-            return "user with email: {} already exists".format(data["email"])
-        if check_password_hash(hashed_pass, data['confirm_password']):
-            User_object.create_user(data['email'], data['username'], hashed_pass)
-            return "User registered successfully", 201
-        return "passwords do not match", 401
+        for items in data.values():
+            if items == "":
+                return "Fields must not be blank"
+            if new_user:
+                return "user with email: {} already exists".format(data["email"]),400
+            if check_password_hash(hashed_pass, data['confirm_password']):
+                User_object.create_user(data['email'], data['username'], hashed_pass)
+                return "User registered successfully", 201
+            return "passwords do not match", 401
 
 
 class LogIn(Resource):
@@ -46,16 +49,18 @@ class LogIn(Resource):
         data = UserParser.parser.parse_args()
         email = str(data['email'])
         password = str(data['password'])
+        for items in data.values():
+            if items == "":
+                return "Fields must not be blank"
+            if email in User_object.users:
+                if check_password_hash(User_object.users[email]['password'], password):
+                    access_token = create_access_token(identity=email, expires_delta=(datetime.timedelta(minutes=1)))
+                    return {"access_token": access_token}, 200
+                # print(password, data['password'], User_object.users[email]['password'], check_password_hash(
+                #     User_object.users[email]['password'], password))
+                return {"msg": "Invalid email or password"}, 401
 
-        if email in User_object.users:
-            if check_password_hash(User_object.users[email]['password'], password):
-                access_token = create_access_token(identity=email, expires_delta=(datetime.timedelta(minutes=1)))
-                return {"access_token": access_token}, 200
-            print(password, data['password'], User_object.users[email]['password'], check_password_hash(
-                User_object.users[email]['password'], password))
-            return {"msg": "Invalid email or password"}, 401
-
-        return "user does not exist", 400
+            return "user does not exist", 400
 
 
 
