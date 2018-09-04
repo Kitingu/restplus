@@ -6,18 +6,11 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install nose
-# command to run tests
 
-script: nosetests --with-coverage
-  - coveralls
+# command to run tests
+script:
+ - nosetests --with-coverage
+
 
 after_success:
   - coveralls
-
-notifications:
-  slack:
-    on_success: never
-    on_failure: never
-  email: false
-
-
