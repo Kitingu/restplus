@@ -1,7 +1,7 @@
 from flask_restplus import Resource, fields, Namespace
 from restApi.models.rides import Rides
 from restApi.helpers.ride_helpers import RideParser
-
+from flask_jwt_extended import jwt_required
 Ride_object = Rides()
 
 ride_api = Namespace("rides", description="use")
@@ -12,13 +12,6 @@ ride_offer = ride_api.model('Rides', {'start_point': fields.String("nairobi"),
                                       'date': fields.String("10/02/2018"),
                                       'time': fields.String("10:21")
                                       })
-
-ride_update = ride_api.model('Riide', {'start_point': fields.String("nairobi"),
-                                       'destination': fields.String("kiambu"),
-                                       'seats_available': fields.Integer(5),
-                                       'date': fields.String("10/02/2018"),
-                                       'time': fields.String("10:21")
-                                       })
 
 
 class Ride(Resource):
@@ -32,20 +25,21 @@ class Ride(Resource):
         data = RideParser.parser.parse_args()
         for items in data.values():
             if items == "":
-                return "Fields must not be blank",400
+                return "Fields must not be blank", 400
             Ride_object.create_rides(data['start_point'], data['destination'], data['seats_available'], data['date'],
                                      data['time'])
             return "Ride created successfully", 201
 
 
 class Riide(Resource):
+    # @jwt_required
     @ride_api.expect(ride_offer)
     def put(self, ride_id):
         data = RideParser.parser.parse_args()
         new_ride = Ride_object.get_single_ride(ride_id)
         for items in data.values():
             if items == "":
-                return "Fields must not be blank",400
+                return "Fields must not be blank", 400
             if new_ride:
                 Ride_object.update(ride_id, data['start_point'], data['destination'], data['seats_available'],
                                    str(data['date']), str(data['time']))

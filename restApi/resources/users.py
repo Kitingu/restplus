@@ -1,13 +1,15 @@
 from flask_restplus import Namespace, Resource, fields
 from restApi.models.users import User
 from restApi.helpers.user_helper import UserParser
+import jwt
+from instance.config import Config
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_jwt_extended import create_access_token, jwt_required,JWTManager
+# from flask_jwt_extended import create_access_token, jwt_required,get_raw_jwt,JWTManager
 from flask import request, jsonify
 import datetime
-from functools import wraps
+from .auth import token_required
 
-
+blacklist = set()
 User_object = User()
 user_api = Namespace("Users", description="")
 new_user = user_api.model('Users', {'email': fields.String('email@example.com'),
@@ -16,25 +18,26 @@ new_user = user_api.model('Users', {'email': fields.String('email@example.com'),
                                     'confirm_password': fields.String('test_pass')
 
                                     })
+user_login = user_api.model('Login', {'email': fields.String('email@example.com'),
+                                      'password': fields.String('test_pass')})
 
 
 class Users(Resource):
-    @jwt_required
+    # @token_required
     def get(self):
         response = User_object.get_all_users()
         return response, 200
-
 
     @user_api.expect(new_user)
     def post(self):
         data = UserParser.parser.parse_args()
         hashed_pass = generate_password_hash(data['password'])
-        new_user=User_object.get_single_user(data['email'])
+        new_user = User_object.get_single_user(data['email'])
         for items in data.values():
             if items == "":
                 return "Fields must not be blank"
             if new_user:
-                return "user with email: {} already exists".format(data["email"]),400
+                return "user with email: {} already exists".format(data["email"]), 400
             if check_password_hash(hashed_pass, data['confirm_password']):
                 User_object.create_user(data['email'], data['username'], hashed_pass)
                 return "User registered successfully", 201
@@ -42,7 +45,7 @@ class Users(Resource):
 
 
 class LogIn(Resource):
-    @user_api.expect(new_user)
+    @user_api.expect(user_login)
     def post(self):
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
@@ -54,17 +57,20 @@ class LogIn(Resource):
                 return "Fields must not be blank"
             if email in User_object.users:
                 if check_password_hash(User_object.users[email]['password'], password):
-                    access_token = create_access_token(identity=email, expires_delta=(datetime.timedelta(minutes=1)))
-                    return {"access_token": access_token}, 200
-                # print(password, data['password'], User_object.users[email]['password'], check_password_hash(
-                #     User_object.users[email]['password'], password))
+                    access_token = jwt.encode({"email": email, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=1)},Config.SECRET)
+                    return {"access_token": access_token.decode('utf-8')}, 200
                 return {"msg": "Invalid email or password"}, 401
-
             return "user does not exist", 400
 
 
-
+# class LogOut(Resource):
+#     @token_required
+#     def post(self):
+#         jti = get_raw_jwt()['jti']
+#         blacklist.add(jti)
+#         return {"msg": "Successfully logged out"}, 200
 
 
 user_api.add_resource(Users, '/users')
 user_api.add_resource(LogIn, '/users/login')
+# user_api.add_resource(LogOut, '/users/logout')

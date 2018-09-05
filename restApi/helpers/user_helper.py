@@ -23,5 +23,4 @@ class UserParser:
                         required=True,
                         location='json',
                         help="please enter a valid date")
-class login_helper(UserParser):
-   ...
+

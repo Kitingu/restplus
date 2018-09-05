@@ -52,7 +52,7 @@ Activate the virtual environment by running the command: source /venv/bin/activa
 * This was done by GitHub
 
 ## Github link
-* https://github.com/Kitingu/Restplus/tree/apiv1
+* https://github.com/Kitingu/Restplus/tree/develop
 
 ## Heroku
 ...
