@@ -1,9 +1,12 @@
 import os, sys
 import unittest
 from restApi.app import create_app
-
+from restApi.models.rides import Rides
+from restApi.models.users import User
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+RideObject=Rides()
+UserObject=User()
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
@@ -32,6 +35,12 @@ class BaseTest(unittest.TestCase):
         }
         self.test_user = {
             "email": "asdf@gmail.com",
+            "username": "test_user",
+            "password": "test_pass",
+            "confirm_password": "test_pass"
+        }
+        self.login_user = {
+            "email": "kasee@gmail.com",
             "username": "test_user",
             "password": "test_pass",
             "confirm_password": "test_pass"
@@ -65,18 +74,34 @@ class BaseTest(unittest.TestCase):
         self.request_many = {
             "email": "ben@gmail.com",
             "username": "bene",
-            "number_of_seats": 5000,
+            "number_of_seats": 9,
             "pick_up_point": "ikinu",
             "destination": "Githunguri"
         }
+        self.test_login = {
+            "email": "kasee@gmail.com",
+            "password": "test_pass",
+        }
+
+        self.test_login2 = {
+            "email": "maskoff@gmail.com",
+            "password": "test_pass",
+        }
+        self.invalid_login = {
+            "email": "gathee@gmail.com",
+            "password": "test_pss",
+        }
+        self.approve = {
+            "approval": "true"}
+        self.decline = {
+            "approval": "false"}
 
     def tearDown(self):
-        del self.edit_ride
-        del self.invalid_ride
-        del self.test_ride
-        del self.test_user
-        del self.test_user2
+
+        RideObject.rides.clear()
+        RideObject.requests.clear()
+        UserObject.users.clear()
 
 
-if __name__ == '__main__':
-    unittest.main()
+
+

@@ -29,11 +29,14 @@ class Rides:
         return "Ride updated successfully"
 
     def join_request(self, ride_id, username, number_of_seats, pick_up_point, destination):
-        self.requests["request"] = {"ride_id":ride_id,
+        self.requests[ride_id] = {"ride_id":ride_id,
                                     "username": username,
                                     "number_of_seats": number_of_seats,
                                     "pick_up_point": pick_up_point,
                                     "destination": destination}
+    def check_request_exists(self,ride_id):
+        if ride_id in self.requests:
+            return self.requests[ride_id]
 
         # self.rides[ride_id]["seats_available"] -= number_of_seats
 

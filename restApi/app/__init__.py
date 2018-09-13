@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify
+from flask import Flask, request, jsonify
 from flask_restplus import Api
 from flask_jwt_extended import JWTManager
 
@@ -9,9 +9,13 @@ def create_app(config_name='development'):
     app = Flask(__name__, instance_relative_config=True)
     app.config['JWT_SECRET_KEY'] = 'this is secret'
     app.config["PROPAGATE_EXCEPTIONS"] = True
+    app.config['JWT_BLACKLIST_ENABLED'] = True
+    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+    app.config['JWT_TOKEN_LOCATION'] = ['headers']
 
     jwt = JWTManager(app)
-    api = Api(app=app, description="This is a carpooling api design using flask restplus",
+    jwt.init_app(app)
+    api = Api(app=app, description="This is a carpooling api designed using flask RESTplus",
               title="Ride my way",
               version="1",
               license="MIT",
@@ -19,7 +23,6 @@ def create_app(config_name='development'):
 
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
-
 
     from restApi.resources.rides import ride_api
     api.add_namespace(ride_api, path='/api/v1')

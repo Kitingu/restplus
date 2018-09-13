@@ -1,14 +1,16 @@
 from flask_restplus import Resource, fields, Namespace
 from restApi.models.rides import Rides
 from restApi.helpers.ride_helpers import RideParser
-from flask_jwt_extended import jwt_required
+# from restApi.helpers.user_validator import RideSchema
+
+# from flask_jwt_extended import jwt_required
 Ride_object = Rides()
 
-ride_api = Namespace("rides", description="use")
+ride_api = Namespace("rides", description="this are routes that allow users to create get or delete a ride")
 
 ride_offer = ride_api.model('Rides', {'start_point': fields.String("nairobi"),
                                       'destination': fields.String("kiambu"),
-                                      'seats_available': fields.Integer(5),
+                                      'seats_available': fields.String,
                                       'date': fields.String("10/02/2018"),
                                       'time': fields.String("10:21")
                                       })
@@ -29,6 +31,9 @@ class Ride(Resource):
             Ride_object.create_rides(data['start_point'], data['destination'], data['seats_available'], data['date'],
                                      data['time'])
             return "Ride created successfully", 201
+
+
+
 
 
 class Riide(Resource):

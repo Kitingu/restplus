@@ -14,6 +14,8 @@ class TestDelete(BaseTest):
         response = self.client().delete('/api/v1/rides/1')
         self.assertEqual(response.status_code, 200)
 
+
     def test_delete_non_existing(self):
+        """this is a test to test a ride that does not exist"""
         response = self.client().delete('/api/v1/rides/1')
         self.assertEqual(response.status_code, 404)

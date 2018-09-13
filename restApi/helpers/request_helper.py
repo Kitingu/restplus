@@ -29,3 +29,10 @@ class RequestParser:
                         required=True,
                         location='json',
                         help="This field cannot be blank")
+class ApproveParser:
+    parser = reqparse.RequestParser()
+    parser.add_argument('approval',
+                        type=str,
+                        required=True,
+                        location='json',
+                        help="Input can only be true or false")
