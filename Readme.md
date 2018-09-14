@@ -5,7 +5,7 @@
 
  Ride-my App is a carpooling application that provides drivers with the ability to create ride oﬀers and passengers to join the available ride oﬀers.
 ***
-![Home Image](https://raw.github.com/kitingu/restplus/main_pic.png)
+![Home Image](main_pic.png)
 ## Getting Started
 1. Clone the repository to your machine;
     *https://github.com/Kitingu/Restplus.git
