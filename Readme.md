@@ -4,6 +4,8 @@
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
 
  Ride-my App is a carpooling application that provides drivers with the ability to create ride oﬀers and passengers to join the available ride oﬀers.
+***
+![Home Image](https://raw.github.com/kitingu/restplus/main_pic.png)
 ## Getting Started
 1. Clone the repository to your machine;
     *https://github.com/Kitingu/Restplus.git
@@ -49,13 +51,13 @@ Activate the virtual environment by running the command: source /venv/bin/activa
 
 
 ## Version Control
-* This was done by GitHub
+* GitHub
 
 ## Github link
 * https://github.com/Kitingu/Restplus/tree/develop
 
 ## Heroku
-...
+https://ride-my-way1.herokuapp.com/
 
 ## Author
 * Benedict Kiting'u

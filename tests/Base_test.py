@@ -40,27 +40,16 @@ class BaseTest(unittest.TestCase):
             "password": "test_pass",
             "confirm_password": "test_pass"
         }
-        self.login_user = {
+        self.test_user1 = {
             "email": "kasee@gmail.com",
             "username": "test_user",
             "password": "test_pass",
             "confirm_password": "test_pass"
         }
-        self.test_user1 = {
-            "email": "gathee@gmail.com",
-            "username": "test_user",
-            "password": "test_pass",
-            "confirm_password": "test_pass"
-        }
+
         self.invalid_user = {
             "email": "@gmail.com",
             "username": "",
-            "password": "test_pass",
-            "confirm_password": "test_pass"
-        }
-        self.test_user2 = {
-            "email": "blah@gmail.com",
-            "username": "test_user",
             "password": "test_pass",
             "confirm_password": "test_pass"
         }
@@ -80,24 +69,25 @@ class BaseTest(unittest.TestCase):
             "destination": "Githunguri"
         }
         self.test_login = {
-            "email": "kasee@gmail.com",
+            "email": "asdf@gmail.com",
+            "password": "test_pass",
+        }
+        self.login1 = {
+            "email": "as@gmail.com",
             "password": "test_pass",
         }
 
-        self.test_login2 = {
-            "email": "maskoff@gmail.com",
-            "password": "test_pass",
-        }
         self.invalid_login = {
-            "email": "gathee@gmail.com",
-            "password": "test_pss",
+            "email": "@gmail.com",
+            "password": "",
         }
         self.approve = {
             "approval": "true"}
         self.decline = {
             "approval": "false"}
 
-        user_response=self.client().post('/api/v1/users', data=json.dumps(self.login_user), content_type='application/json')
+        user_response=self.client().post('/api/v1/users', data=json.dumps(self.test_user),
+                                         content_type='application/json')
         user_login=self.client().post('/api/v1/users/login', data=json.dumps(self.test_login),
                                       content_type='application/json')
         user_token = json.loads(user_login.get_data(as_text=True))

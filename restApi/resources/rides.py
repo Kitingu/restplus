@@ -1,9 +1,8 @@
 from flask_restplus import Resource, fields, Namespace
 from restApi.models.rides import Rides
 from restApi.helpers.ride_helpers import RideParser
-# from restApi.helpers.user_validator import RideSchema
+from .auth import token_required
 
-# from flask_jwt_extended import jwt_required
 Ride_object = Rides()
 
 ride_api = Namespace("rides", description="this are routes that allow users to create get or delete a ride")
@@ -21,7 +20,8 @@ class Ride(Resource):
     def get(self):
         response = Ride_object.get_all_rides()
         return response, 200
-
+    @token_required
+    @ride_api.doc(security='apikey')
     @ride_api.expect(ride_offer)
     def post(self):
         data = RideParser.parser.parse_args()
@@ -37,7 +37,8 @@ class Ride(Resource):
 
 
 class Riide(Resource):
-    # @jwt_required
+    @token_required
+    @ride_api.doc(security='apikey')
     @ride_api.expect(ride_offer)
     def put(self, ride_id):
         data = RideParser.parser.parse_args()

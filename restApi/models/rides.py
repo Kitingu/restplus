@@ -38,10 +38,3 @@ class Rides:
         if ride_id in self.requests:
             return self.requests[ride_id]
 
-        # self.rides[ride_id]["seats_available"] -= number_of_seats
-
-# kas=Rides.create_rides("kiambu","nairobi",5,"02/02/2018","10:00")
-# print(kas.get_all_rides())
-# print(join_request(1,"kasee",1,3,"kiambu","nairobi"))
-# print(delete_ride(1))
-# print(get_single_ride(1))

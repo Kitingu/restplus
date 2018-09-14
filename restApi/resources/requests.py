@@ -17,6 +17,8 @@ approve = request_api.model('Approval', {'approval': fields.Boolean(default=True
 
 class Request(Resource):
     @request_api.expect(request)
+    @token_required
+    @request_api.doc(security='apikey')
     def post(self, ride_id):
         data = RequestParser.parser.parse_args()
         new_ride = Ride_object.get_single_ride(ride_id)
