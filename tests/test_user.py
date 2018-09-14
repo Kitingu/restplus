@@ -18,3 +18,11 @@ class TestUser(BaseTest):
         self.assertEqual(resp.status_code, 201)
         resp = self.client().post('/api/v1/users', data=json.dumps(self.test_user2), content_type='application/json')
         self.assertEqual(resp.status_code, 400)
+
+    def test_get_users(self):
+        resp = self.client().get('/api/v1/users',headers=self.user_header)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_user(self):
+        pass
+

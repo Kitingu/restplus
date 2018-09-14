@@ -3,6 +3,7 @@ import unittest
 from restApi.app import create_app
 from restApi.models.rides import Rides
 from restApi.models.users import User
+import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 RideObject=Rides()
@@ -96,6 +97,12 @@ class BaseTest(unittest.TestCase):
         self.decline = {
             "approval": "false"}
 
+        user_response=self.client().post('/api/v1/users', data=json.dumps(self.login_user), content_type='application/json')
+        user_login=self.client().post('/api/v1/users/login', data=json.dumps(self.test_login),
+                                      content_type='application/json')
+        user_token = json.loads(user_login.get_data(as_text=True))
+        token = user_token['access_token']
+        self.user_header = {"Content-Type": "application/json", "x-access-token": token}
     def tearDown(self):
 
         RideObject.rides.clear()

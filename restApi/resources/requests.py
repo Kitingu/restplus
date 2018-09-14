@@ -1,10 +1,11 @@
 from flask_restplus import Namespace, Resource, fields
 from restApi.models.rides import Rides
-from restApi.models.requests import Request
+from .auth import token_required
+
 from restApi.helpers.request_helper import RequestParser, ApproveParser
 
 Ride_object = Rides()
-Request_object = Request()
+
 request_api = Namespace("Requests", description="This namespace allows users to request to join existing rides")
 request = request_api.model('Request', {'email': fields.String('email@example.com'),
                                         'username': fields.String('test_user'),
@@ -39,6 +40,8 @@ class Requests(Resource):
 
 class Approve(Resource):
     @request_api.expect(approve)
+    @token_required
+    @request_api.doc(security='apikey')
     def post(self, ride_id):
         ride_request = Ride_object.check_request_exists(ride_id)
         if ride_request:

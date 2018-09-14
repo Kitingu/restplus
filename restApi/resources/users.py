@@ -2,11 +2,12 @@ from flask_restplus import Namespace, Resource, fields
 from restApi.models.users import User
 from restApi.helpers.user_helper import UserParser
 from restApi.helpers.login_helper import LoginParser
-from flask_jwt_extended import create_access_token,jwt_required,get_raw_jwt
+import jwt
+from instance.config import Config
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import request, jsonify
 import datetime
-# from restApi.resources.auth import token_required
+from restApi.resources.auth import token_required
 
 blacklist = set()
 User_object = User()
@@ -23,7 +24,8 @@ user_login = user_api.model('Login', {'email': fields.String('email@example.com'
 
 
 class Users(Resource):
-    @jwt_required
+    @token_required
+    @user_api.doc(security='apikey')
     def get(self):
         response = User_object.get_all_users()
         return response, 200
@@ -46,6 +48,8 @@ class Users(Resource):
 
 class Update(Resource):
     @user_api.expect(new_user)
+    @token_required
+    @user_api.doc(security='apikey')
     def put(self, email):
         data = UserParser.parser.parse_args()
         user_update = User_object.get_single_user(email)
@@ -72,24 +76,23 @@ class LogIn(Resource):
 
         if email in User_object.users:
             if check_password_hash(User_object.users[email]['password'], password):
-                access_token = create_access_token(identity=email, expires_delta=(datetime.timedelta(minutes=1)))
-                return {"access_token": access_token}, 200
-            print(password, data['password'], User_object.users[email]['password'], check_password_hash(
-                User_object.users[email]['password'], password))
+                access_token = jwt.encode(
+                    {"email": email, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}, Config.SECRET)
+                return {"access_token": access_token.decode('utf-8')}, 200
             return {"msg": "Invalid email or password"}, 401
 
         return "user does not exist", 400
 
 
-class LogOut(Resource):
-    @jwt_required
-    def post(self):
-        jti = get_raw_jwt()['jti']
-        blacklist.add(jti)
-        return {"msg": "Successfully logged out"}, 200
+# class LogOut(Resource):
+#     @token_required
+#     def post(self):
+#         jti = get_raw_jwt()['jti']
+#         blacklist.add(jti)
+#         return {"msg": "Successfully logged out"}, 200
 
 
 user_api.add_resource(Users, '/users')
 user_api.add_resource(Update, '/users/<string:email>')
 user_api.add_resource(LogIn, '/users/login')
-user_api.add_resource(LogOut, '/users/logout')
+# user_api.add_resource(LogOut, '/users/logout')

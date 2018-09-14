@@ -12,10 +12,17 @@ def create_app(config_name='development'):
     app.config['JWT_BLACKLIST_ENABLED'] = True
     app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
     app.config['JWT_TOKEN_LOCATION'] = ['headers']
-
+    authorizations = {
+        'apikey': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'x-access-token'
+        }
+    }
     jwt = JWTManager(app)
-    jwt.init_app(app)
-    api = Api(app=app, description="This is a carpooling api designed using flask RESTplus",
+    api = Api(app=app,
+              authorizations=authorizations,
+              description="This is a carpooling api designed using flask RESTplus",
               title="Ride my way",
               version="1",
               license="MIT",
